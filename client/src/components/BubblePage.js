@@ -7,6 +7,7 @@ import { axiosWithAuth } from "../utils/axiosWithAuth";
 
 const BubblePage = () => {
   const [colorList, setColorList] = useState([]);
+  const [refresh, setRefresh] = useState(false)
   // fetch your colors data from the server when the component mounts
   // set that data to the colorList state property
 
@@ -17,11 +18,15 @@ const BubblePage = () => {
         setColorList(res.data)  
       )
       .catch(err => console.log(err))
-    }, [setColorList])
+    }, [refresh])
+
+    const refreshHandler = () => {
+      setRefresh(!refresh)
+    }
 
   return (
     <>
-      <ColorList colors={colorList} updateColors={setColorList} />
+      <ColorList colors={colorList} updateColors={setColorList} refreshHandler={refreshHandler}/>
       <Bubbles colors={colorList} />
     </>
   );

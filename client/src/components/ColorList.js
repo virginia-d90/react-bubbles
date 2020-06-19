@@ -8,7 +8,7 @@ const initialColor = {
   code: { hex: "" }
 };
 
-const ColorList = ({ colors, updateColors }) => {
+const ColorList = ({ colors, updateColors, refreshHandler }) => {
   console.log(colors);
   const [editing, setEditing] = useState(false);
   const [colorToEdit, setColorToEdit] = useState(initialColor);
@@ -36,10 +36,24 @@ const ColorList = ({ colors, updateColors }) => {
         push(`/bubble-page/`)
       })
       .catch(err => console.log(err))
+      .finally(
+        refreshHandler()
+      )
     };
 
   const deleteColor = color => {
     // make a delete request to delete this color
+    // color.preventDefault()
+    axiosWithAuth()
+      .delete(`/api/colors/${color.id}`)
+      .then(res => {
+        push(`/bubble-page`)
+      })
+      .catch(err => console.log(err))
+      .finally(() => {
+        refreshHandler()
+      })
+
   };
 
   return (
